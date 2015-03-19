@@ -16,8 +16,8 @@ try { fs.mkdirSync('./import/splunk'); } catch (e) { }
 try { fs.mkdirSync('./import/mixpanel-failures'); } catch (e) { }
 
 var config = JSON.parse(fs.readFileSync(__dirname + '/config.json'));
-var dateRange = 'hour';
-var batchSize = 20;
+var dateRange = config.search.range;
+var batchSize = config.mixpanel.batchSize;
 var startDate = moment(config.search.start);
 var endDate = moment(config.search.end);
 var dates = [];
