@@ -10,6 +10,11 @@ var SplunkCls = require('./splunk');
 var MassageData = require('./massage');
 var Mixpanel = require('./mixpanel');
 
+// Ensure output dirs exist
+try { fs.mkdirSync('./import/logs'); } catch (e) { }
+try { fs.mkdirSync('./import/splunk'); } catch (e) { }
+try { fs.mkdirSync('./import/mixpanel-failures'); } catch (e) { }
+
 var config = JSON.parse(fs.readFileSync(__dirname + '/config.json'));
 var dateRange = 'hour';
 var batchSize = 20;
@@ -23,12 +28,12 @@ moment()
 	});
 
 async.eachSeries(dates, function(dateRange, dateDone) {
-	async.eachSeries(config.searches, function(search, searchDone) {
+	async.eachSeries(config.search.searches, function(search, searchDone) {
 		console.log('Start processing ' + search.eventName + ' for ' + dateRange.start.format() + ' - ' + dateRange.end.format());
 		var log = new (winston.Logger)({
 			transports: [
 				new (winston.transports.File)({
-					filename: 'logs/' + search.eventName + '--' + dateRange.start.format('YYYY_MM_DD__HH_mm_ss') + '_' + dateRange.end.format('YYYY_MM_DD__HH_mm_ss') + '.log',
+					filename: __dirname + '/logs/' + search.eventName + '--' + dateRange.start.format('YYYY_MM_DD__HH_mm_ss') + '_' + dateRange.end.format('YYYY_MM_DD__HH_mm_ss') + '.log',
 					level: 'debug'
 				})
 			]

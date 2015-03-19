@@ -18,9 +18,9 @@ var MixPanel = {
 	        }
 	        else {
 	        	// Write the url to a file
-                var date = +new Date();
-                fs.writeFile('./mixpanel-failures/' + (date) + '.txt', url);
-                fs.writeFile('./mixpanel-failures/' + (date) + '_data.json', JSON.stringify(data));
+	            var date = +new Date();
+	            fs.writeFile(__dirname + '/mixpanel-failures/' + (date) + '.txt', url);
+	            fs.writeFile(__dirname + '/mixpanel-failures/' + (date) + '_data.json', JSON.stringify(data));
 	        	log.error('Batch returned non 200 response, body=' + body + ', status=' + response.statusCode);
 	        }
 	        done();

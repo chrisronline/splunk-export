@@ -113,7 +113,7 @@ Splunk.prototype.search = function(query, startDate, endDate, eventName, done) {
                 },
                 // Print them out (as JSON), and cancel the job
                 function(results, job, done) {
-                    var fileName = './splunk/' + eventName + '--' + startDate.format('YYYY_MM_DD__HH_mm_ss') + '_' + endDate.format('YYYY_MM_DD__HH_mm_ss') + '.json';
+                    var fileName = __dirname + '/splunk/' + eventName + '--' + startDate.format('YYYY_MM_DD__HH_mm_ss') + '_' + endDate.format('YYYY_MM_DD__HH_mm_ss') + '.json';
                     self.log.debug('Writing splunk data to ' + fileName);
                     fs.readFile(fileName, function(err, data) {
                         if (err) {
