@@ -5,8 +5,9 @@ var request = require('request');
 var MixPanel = {
 	send: function(config, data, log, done) {
 		var dataStr = new Buffer(JSON.stringify(data)).toString('base64');
-		var url = 'http://api.mixpanel.com/import/?data=' + dataStr + '&api_key=' + config.apiKey + '&verbose=1';
-		request(url, function(err, response, body) {
+		var obj = { data: dataStr, api_key: config.apiKey, verbose: 1 };
+		var url = 'http://api.mixpanel.com/import/';
+		request.post(url, {form: obj}, function(err, response, body) {
 	        if (err) {
 	            log.error('Error sending match, err=', err);
 	        }
