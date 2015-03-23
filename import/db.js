@@ -5,7 +5,7 @@ var tds = require('tedious');
 function connectToDatabase(config, done) {
     var connection = new tds.Connection(config);
     connection.on('connect', function(err) {
-        done(connection);
+        done(err, connection);
     });
 };
 
@@ -13,7 +13,12 @@ function connectToDatabase(config, done) {
 function query(config, query, done) {
     var results = [];
 
-    connectToDatabase(config, function(connection) {
+    connectToDatabase(config, function(err, connection) {
+        if (err) {
+            console.error('Unable to connect to DB, err=' + err);
+            done(err);
+            return;
+        }
         var request = new tds.Request(query, function(err) {
             if (err) {
                 console.error('Unable to execute request, query=' + query + ', err=' + err);
